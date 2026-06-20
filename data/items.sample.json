@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sample-spanner",
+    "source_id": "google-cloud",
+    "source_name": "Google Cloud Blog",
+    "source_kind": "official",
+    "title": "Sample: designing a globally distributed data service",
+    "url": "https://cloud.google.com/spanner/docs/true-time-external-consistency",
+    "author": "Google Cloud",
+    "summary": "A sample offline item showing how architecture, consistency, and database tags appear before the first live feed refresh.",
+    "content": "Distributed databases must explain consistency, replication, failure handling, and operational tradeoffs.",
+    "published_at": "2026-06-18T00:00:00Z",
+    "collected_at": "2026-06-20T00:00:00Z",
+    "tags": ["database", "distributed-systems", "google-cloud", "official"]
+  },
+  {
+    "id": "sample-otel",
+    "source_id": "cloudflare",
+    "source_name": "Cloudflare Blog",
+    "source_kind": "engineering",
+    "title": "Sample: operating observable edge services",
+    "url": "https://opentelemetry.io/docs/",
+    "author": "Sample data",
+    "summary": "A sample item for testing multi-word search, source filters, and observability tags without network access.",
+    "content": "Metrics, traces, logs, error budgets, and graceful degradation help teams operate distributed edge systems.",
+    "published_at": "2026-06-17T00:00:00Z",
+    "collected_at": "2026-06-20T00:00:00Z",
+    "tags": ["cloud", "distributed-systems", "observability"]
+  }
+]

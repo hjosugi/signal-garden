@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="2.0">
+  <head><title>Signal Garden starter feeds</title></head>
+  <body>
+    <outline text="Google and cloud official">
+      <outline type="rss" text="Google Cloud Blog" xmlUrl="https://cloudblog.withgoogle.com/rss/" htmlUrl="https://cloud.google.com/blog/"/>
+      <outline type="rss" text="Google Research" xmlUrl="https://research.google/blog/rss/" htmlUrl="https://research.google/blog/"/>
+      <outline type="rss" text="Google Developers Blog" xmlUrl="https://developers.googleblog.com/feeds/posts/default" htmlUrl="https://developers.googleblog.com/"/>
+      <outline type="rss" text="AWS News Blog" xmlUrl="https://aws.amazon.com/blogs/aws/feed/" htmlUrl="https://aws.amazon.com/blogs/aws/"/>
+      <outline type="rss" text="AWS Architecture Blog" xmlUrl="https://aws.amazon.com/blogs/architecture/feed/" htmlUrl="https://aws.amazon.com/blogs/architecture/"/>
+      <outline type="rss" text="AWS Big Data Blog" xmlUrl="https://aws.amazon.com/blogs/big-data/feed/" htmlUrl="https://aws.amazon.com/blogs/big-data/"/>
+      <outline type="rss" text="NVIDIA Technical Blog" xmlUrl="https://developer.nvidia.com/blog/feed/" htmlUrl="https://developer.nvidia.com/blog/"/>
+      <outline type="rss" text="Databricks Blog" xmlUrl="https://www.databricks.com/blog/feed" htmlUrl="https://www.databricks.com/blog"/>
+      <outline type="rss" text="Snowflake Blog" xmlUrl="https://www.snowflake.com/en/blog/feed/" htmlUrl="https://www.snowflake.com/en/blog/"/>
+    </outline>
+    <outline text="Engineering">
+      <outline type="rss" text="Cloudflare Blog" xmlUrl="https://blog.cloudflare.com/rss/" htmlUrl="https://blog.cloudflare.com/"/>
+      <outline type="rss" text="Meta Engineering" xmlUrl="https://engineering.fb.com/feed/" htmlUrl="https://engineering.fb.com/"/>
+      <outline type="rss" text="Netflix TechBlog" xmlUrl="https://netflixtechblog.com/feed" htmlUrl="https://netflixtechblog.com/"/>
+      <outline type="rss" text="Uber Engineering" xmlUrl="https://www.uber.com/blog/engineering/rss/" htmlUrl="https://www.uber.com/blog/engineering/"/>
+      <outline type="rss" text="GitHub Engineering" xmlUrl="https://github.blog/engineering/feed/" htmlUrl="https://github.blog/engineering/"/>
+      <outline type="rss" text="Stripe Blog" xmlUrl="https://stripe.com/blog/feed.rss" htmlUrl="https://stripe.com/blog"/>
+    </outline>
+    <outline text="Aggregators and newsletters">
+      <outline type="rss" text="The Pragmatic Engineer" xmlUrl="https://newsletter.pragmaticengineer.com/feed" htmlUrl="https://newsletter.pragmaticengineer.com/"/>
+      <outline type="rss" text="Hacker News Front Page" xmlUrl="https://hnrss.org/frontpage" htmlUrl="https://news.ycombinator.com/"/>
+      <outline type="rss" text="Lobsters" xmlUrl="https://lobste.rs/rss" htmlUrl="https://lobste.rs/"/>
+    </outline>
+  </body>
+</opml>
