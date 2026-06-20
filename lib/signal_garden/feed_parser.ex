@@ -1,12 +1,6 @@
 defmodule SignalGarden.FeedParser do
   @moduledoc false
 
-  require Record
-
-  Record.defrecord(:xmlElement, Record.extract(:xmlElement, from_lib: "xmerl/include/xmerl.hrl"))
-  Record.defrecord(:xmlText, Record.extract(:xmlText, from_lib: "xmerl/include/xmerl.hrl"))
-  Record.defrecord(:xmlAttribute, Record.extract(:xmlAttribute, from_lib: "xmerl/include/xmerl.hrl"))
-
   alias SignalGarden.{Item, Tagger, Util}
 
   def parse(body, feed, now \\ DateTime.utc_now()) do
@@ -157,7 +151,7 @@ defmodule SignalGarden.FeedParser do
 
   defp children(node, name) do
     node
-    |> xmlElement(:content)
+    |> element_content()
     |> Enum.filter(&element?/1)
     |> Enum.filter(&(local_name(&1) == name))
   end
@@ -167,10 +161,10 @@ defmodule SignalGarden.FeedParser do
   defp text(node) do
     cond do
       text_node?(node) ->
-        node |> xmlText(:value) |> to_string()
+        node |> text_value() |> to_string()
 
       element?(node) ->
-        node |> xmlElement(:content) |> Enum.map_join(" ", &text/1)
+        node |> element_content() |> Enum.map_join(" ", &text/1)
 
       true ->
         ""
@@ -181,19 +175,19 @@ defmodule SignalGarden.FeedParser do
 
   defp attr(node, name) do
     node
-    |> xmlElement(:attributes)
+    |> element_attributes()
     |> Enum.find(fn attribute -> local_name(attribute) == name end)
     |> case do
       nil -> ""
-      attribute -> attribute |> xmlAttribute(:value) |> to_string()
+      attribute -> attribute |> attribute_value() |> to_string()
     end
   end
 
   defp local_name(node) do
     name =
       cond do
-        element?(node) -> xmlElement(node, :name)
-        attribute?(node) -> xmlAttribute(node, :name)
+        element?(node) -> element_name(node)
+        attribute?(node) -> attribute_name(node)
         true -> ""
       end
 
@@ -207,7 +201,14 @@ defmodule SignalGarden.FeedParser do
   defp name_to_string({_namespace, local}), do: to_string(local)
   defp name_to_string(name), do: to_string(name)
 
-  defp element?(node), do: Record.is_record(node, :xmlElement)
-  defp text_node?(node), do: Record.is_record(node, :xmlText)
-  defp attribute?(node), do: Record.is_record(node, :xmlAttribute)
+  defp element?(node), do: is_tuple(node) and tuple_size(node) >= 9 and elem(node, 0) == :xmlElement
+  defp text_node?(node), do: is_tuple(node) and tuple_size(node) >= 5 and elem(node, 0) == :xmlText
+  defp attribute?(node), do: is_tuple(node) and tuple_size(node) >= 9 and elem(node, 0) == :xmlAttribute
+
+  defp element_name(node), do: elem(node, 1)
+  defp element_attributes(node), do: elem(node, 7)
+  defp element_content(node), do: elem(node, 8)
+  defp text_value(node), do: elem(node, 4)
+  defp attribute_name(node), do: elem(node, 1)
+  defp attribute_value(node), do: elem(node, 8)
 end

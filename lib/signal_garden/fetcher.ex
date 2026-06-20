@@ -50,8 +50,8 @@ defmodule SignalGarden.Fetcher do
 
   defp headers do
     [
-      {'user-agent', 'signal-garden/0.2 (+https://github.com/hjosugi/signal-garden)'},
-      {'accept', 'application/atom+xml, application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.1'}
+      {~c"user-agent", ~c"signal-garden/0.2 (+https://github.com/hjosugi/signal-garden)"},
+      {~c"accept", ~c"application/atom+xml, application/rss+xml, application/xml, text/xml;q=0.9, */*;q=0.1"}
     ]
   end
 end
