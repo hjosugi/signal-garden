@@ -11,6 +11,11 @@ mix hub.collect
 mix hub.export --out public
 ```
 
+Deployment is handled by `.github/workflows/pages.yml` (`Deploy Hjosugi Hub`).
+GitHub Pages source should be set to GitHub Actions for `hjosugi/hjosugi-hub`.
+The workflow exports `public/` and deploys it as a Pages artifact; do not commit
+`public/`.
+
 ## Rules
 
 - Do not reintroduce non-Elixir runtime code.

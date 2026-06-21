@@ -20,6 +20,14 @@ Open `public/index.html` for the portfolio and `public/radar/index.html` for
 the searchable radar index. For the radar page, serve `public/` over HTTP so
 browser `fetch()` can load `data/items.json`.
 
+For example:
+
+```bash
+python3 -m http.server 4000 --directory public
+```
+
+Then open `http://localhost:4000/`.
+
 ## Configuration
 
 - `config/site.exs`: profile, links, skills, and selected projects
@@ -29,14 +37,32 @@ browser `fetch()` can load `data/items.json`.
 
 ## Deployment
 
-GitHub Pages is the cheapest path here: no always-on server, no database, and no
-paid worker. The included Pages workflow runs every six hours:
+GitHub Pages is the intended production target for Hjosugi Hub: no always-on
+server, no database, and no paid worker. The repository should be named
+`hjosugi-hub`; with the default GitHub Pages domain the site will be published at
+`https://hjosugi.github.io/hjosugi-hub/`.
 
-1. `mix hub.collect --timeout 20000 --workers 6 --max-items 1000`
-2. `mix hub.export --out public`
-3. Deploys `public/` with `actions/deploy-pages`
+Deployment is handled by [`.github/workflows/pages.yml`](.github/workflows/pages.yml):
 
-Enable GitHub Pages with "GitHub Actions" as the source and push `main`.
+1. `mix test`
+2. `mix hub.collect --timeout 20000 --workers 6 --max-items 1000`
+3. `mix hub.export --out public --base-url <GitHub Pages URL>`
+4. Deploys `public/` with `actions/deploy-pages`
+
+Set it up once in GitHub:
+
+1. Open the repository settings for `hjosugi/hjosugi-hub`.
+2. Go to **Pages**.
+3. Set **Build and deployment** -> **Source** to **GitHub Actions**.
+4. Push to `main`, or run **Deploy Hjosugi Hub** from the Actions tab.
+
+The deploy workflow also runs every six hours to refresh the public radar data.
+It passes GitHub Pages' resolved URL to `mix hub.export --base-url`, so
+`robots.txt` and `sitemap.xml` match the actual Pages URL. No secrets are
+required.
+
+`public/` is generated output and is intentionally ignored by Git. Do not commit
+it; GitHub Pages receives it from the workflow artifact.
 
 Important: GitHub Pages cannot hide collected data. Anything in
 `public/data/items.json` is public.

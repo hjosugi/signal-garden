@@ -1,4 +1,4 @@
-name: pages
+name: Deploy Hjosugi Hub
 
 on:
   push:
@@ -13,40 +13,48 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: hjosugi-hub-pages
   cancel-in-progress: true
 
 jobs:
   build:
+    name: Build static site
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: erlef/setup-beam@v1
         with:
           otp-version: "27.x"
           elixir-version: "1.18.x"
+      - name: Run tests
+        run: mix test
       - name: Restore collected radar cache
         uses: actions/cache@v4
         with:
           path: data/items.term
-          key: hub-items-${{ github.run_id }}
+          key: hjosugi-hub-items-${{ github.run_id }}
           restore-keys: |
-            hub-items-
+            hjosugi-hub-items-
       - name: Collect public feeds
         run: mix hub.collect --timeout 20000 --workers 6 --max-items 1000
       - id: pages
+        name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
       - name: Export static site
         run: mix hub.export --out public --base-url "${{ steps.pages.outputs.base_url }}"
-      - uses: actions/upload-pages-artifact@v3
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: public
 
   deploy:
+    name: Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
