@@ -93,7 +93,7 @@
     .then((data) => {
       items = Array.isArray(data) ? data : [];
       if (totalCountNode) totalCountNode.textContent = String(items.length);
-      populateSuggestions();
+      indexSuggestions();
       updateFromLocation();
     })
     .catch(() => {
@@ -103,6 +103,7 @@
 
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
+    closeSuggest();
     navigate(withParam(currentParams(), "q", input.value.trim()));
   });
 
@@ -162,18 +163,124 @@
     resultsNode.replaceChildren(...visible.map(renderCard));
   }
 
-  // Native autocomplete: suggest every source name and tag as you type.
-  function populateSuggestions() {
-    if (!suggestNode) return;
-    const terms = new Set();
+  // --- autocomplete ------------------------------------------------------
+
+  let uniqueTags = [];
+  let uniqueSources = [];
+  let suggestions = [];
+  let activeIndex = -1;
+
+  function indexSuggestions() {
+    const tags = new Set();
+    const sources = new Set();
     for (const item of items) {
-      if (item.source_name) terms.add(item.source_name);
-      for (const tag of item.tags || []) terms.add(tag);
+      if (item.source_name) sources.add(item.source_name);
+      for (const tag of item.tags || []) tags.add(tag);
     }
-    const options = [...terms]
-      .sort((a, b) => collator.compare(a, b))
-      .map((value) => el("option", { value }));
-    suggestNode.replaceChildren(...options);
+    uniqueTags = [...tags].sort((a, b) => collator.compare(a, b));
+    uniqueSources = [...sources].sort((a, b) => collator.compare(a, b));
+  }
+
+  function computeSuggestions(value) {
+    const q = norm(value);
+    if (q.length < 2) return [];
+    const tagHits = uniqueTags
+      .filter((t) => norm(t).includes(q))
+      .slice(0, 4)
+      .map((t) => ({ kind: "tag", label: t }));
+    const sourceHits = uniqueSources
+      .filter((s) => norm(s).includes(q))
+      .slice(0, 3)
+      .map((s) => ({ kind: "source", label: s }));
+    const titleHits = rank(items.filter((i) => norm(i.title).includes(q)), value)
+      .slice(0, 6)
+      .map((i) => ({ kind: "item", label: i.title || "Untitled", item: i }));
+    return [...tagHits, ...sourceHits, ...titleHits].slice(0, 12);
+  }
+
+  function renderSuggest() {
+    if (!suggestNode) return;
+    if (suggestions.length === 0) return closeSuggest();
+    const rows = suggestions.map((s, idx) => {
+      const row = el(
+        "div",
+        { class: "suggest-item" + (idx === activeIndex ? " active" : ""), role: "option" },
+        [
+          el("span", { class: "suggest-kind", text: s.kind === "item" ? "open" : s.kind }),
+          el("span", { class: "suggest-label", text: s.label }),
+        ]
+      );
+      // mousedown (not click) fires before the input blur, so focus is kept.
+      row.addEventListener("mousedown", (event) => {
+        event.preventDefault();
+        selectSuggestion(idx);
+      });
+      return row;
+    });
+    suggestNode.replaceChildren(...rows);
+    suggestNode.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+  }
+
+  function closeSuggest() {
+    suggestions = [];
+    activeIndex = -1;
+    if (suggestNode) {
+      suggestNode.hidden = true;
+      suggestNode.replaceChildren();
+    }
+    input.setAttribute("aria-expanded", "false");
+  }
+
+  function selectSuggestion(idx) {
+    const choice = suggestions[idx];
+    if (!choice) return;
+    closeSuggest();
+    if (choice.kind === "item") {
+      window.open(safeURL(choice.item.url), "_blank", "noopener");
+      return;
+    }
+    input.value = "";
+    navigate(withParam(new URLSearchParams(), choice.kind, choice.label));
+  }
+
+  function debounce(fn, ms) {
+    let timer;
+    return () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(fn, ms);
+    };
+  }
+
+  if (input && suggestNode) {
+    input.addEventListener(
+      "input",
+      debounce(() => {
+        suggestions = computeSuggestions(input.value);
+        activeIndex = -1;
+        renderSuggest();
+      }, 120)
+    );
+
+    input.addEventListener("keydown", (event) => {
+      if (suggestNode.hidden || suggestions.length === 0) return;
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        activeIndex = (activeIndex + 1) % suggestions.length;
+        renderSuggest();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        activeIndex = (activeIndex - 1 + suggestions.length) % suggestions.length;
+        renderSuggest();
+      } else if (event.key === "Enter" && activeIndex >= 0) {
+        event.preventDefault();
+        selectSuggestion(activeIndex);
+      } else if (event.key === "Escape") {
+        closeSuggest();
+      }
+    });
+
+    input.addEventListener("blur", () => window.setTimeout(closeSuggest, 120));
   }
 
   function rank(values, query) {
