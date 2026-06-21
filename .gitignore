@@ -1,4 +1,9 @@
 .env
+
+# Local assistant notes/settings. Keep CLAUDE.md tracked as shared repo guidance.
+CLAUDE.local.md
+.claude/settings.local.json
+
 _build/
 deps/
 .elixir_ls/
