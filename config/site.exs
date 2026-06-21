@@ -60,6 +60,16 @@
       stack: ["Python", "FastAPI", "uv", "yt-dlp", "ffmpeg"],
       highlights: [],
       featured: false
+    },
+    %{
+      name: "Form Panic Bureau",
+      url: "https://github.com/hjosugi/form-panic-bureau",
+      demo_url: "https://hjosugi.github.io/form-panic-bureau/",
+      summary:
+        "A single-screen browser game written entirely in Elm: fix every defect in a deliberately user-hostile form and catch the fleeing \"Accept\" button within 60 seconds — a playable parody of dark-pattern forms.",
+      stack: ["Elm", "Nix", "HTML", "CSS"],
+      highlights: [],
+      featured: false
     }
   ],
   skills: [
