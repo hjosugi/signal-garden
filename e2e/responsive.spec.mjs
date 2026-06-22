@@ -2,6 +2,14 @@ import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 
+// Capture the final design deterministically: the site only skips its
+// scroll-reveal fade (which would leave off-screen sections at opacity:0 in a
+// full-page screenshot) under reduced motion. Set it per page so it applies
+// before the scripts run.
+test.beforeEach(async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+});
+
 // Pages of the exported static site to verify.
 const PAGES = [
   { name: "about", path: "/", ready: "h1" },
@@ -89,6 +97,19 @@ test("radar tabs link across the three scoped pages", async ({ page }) => {
   await page.locator(".radar-tab", { hasText: "news" }).click();
   await page.waitForURL("**/radar/news/");
   await expect(page.locator(".radar-tab.active")).toHaveText("news");
+});
+
+test("about page renders its project and skill sections opaquely", async ({ page }) => {
+  await page.goto("/", { waitUntil: "networkidle" });
+  expect(await page.locator(".project-card").count()).toBeGreaterThan(0);
+  expect(await page.locator(".skill-group").count()).toBeGreaterThan(0);
+  // toBeVisible() ignores opacity, so assert the reveal fade is actually
+  // resolved (sections must not be left at opacity:0).
+  const opacity = await page
+    .locator(".section")
+    .first()
+    .evaluate((n) => getComputedStyle(n).opacity);
+  expect(opacity).toBe("1");
 });
 
 test("filters collapse on mobile and stay open on wider screens", async ({ page }) => {
