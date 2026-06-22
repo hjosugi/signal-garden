@@ -34,6 +34,14 @@ defmodule HjosugiHub.Renderer do
 
     write_rendered(out_dir, "index.html", "index.html.eex", assigns)
     write_radar_pages(out_dir, assigns)
+
+    write_rendered(
+      Path.join(out_dir, "gallery"),
+      "index.html",
+      "gallery.html.eex",
+      Map.put(assigns, :root, "../")
+    )
+
     Store.write_json(Path.join(out_dir, "data/items.json"), public_items)
     Store.write_json(Path.join(out_dir, "data/site.json"), site)
     Store.write_json(Path.join(out_dir, "data/feeds.json"), public_feeds(feeds))
@@ -129,6 +137,7 @@ defmodule HjosugiHub.Renderer do
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       <url><loc>#{base_url}/</loc></url>
       <url><loc>#{base_url}/radar/</loc></url>
+      <url><loc>#{base_url}/gallery/</loc></url>
     </urlset>
     """
     |> String.trim_leading()

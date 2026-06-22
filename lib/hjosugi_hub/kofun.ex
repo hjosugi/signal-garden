@@ -52,6 +52,36 @@ defmodule HjosugiHub.Kofun do
     )
   end
 
+  # Face variants for the gallery ("ドットの差分"). Eyes + mouth only; the body
+  # silhouette is shared. munch adds a euglena (midorimushi) blob he is nibbling.
+  @faces %{
+    idle: [{5, 4, 1, 2}, {10, 4, 1, 2}, {7, 6, 2, 1}],
+    blink: [{5, 5, 1, 1}, {10, 5, 1, 1}, {7, 6, 2, 1}],
+    smile: [{5, 4, 1, 2}, {10, 4, 1, 2}, {6, 6, 1, 1}, {7, 7, 2, 1}, {9, 6, 1, 1}],
+    munch: [{5, 4, 1, 2}, {10, 4, 1, 2}, {7, 6, 2, 2}]
+  }
+
+  @doc "Pose names available for the gallery."
+  def poses, do: [:idle, :blink, :smile, :munch]
+
+  @doc "A single gallery pose sprite (16x16, scaled up by CSS)."
+  def pose_svg(pose) do
+    face = Map.get(@faces, pose, @faces.idle)
+
+    svg(
+      ~s(viewBox="0 0 16 16" class="kofun-svg px-svg" shape-rendering="crispEdges" aria-hidden="true" focusable="false"),
+      group("currentColor", body_rects()) <>
+        group("#0a1c17", pose_face_rects(face)) <>
+        pose_extra(pose)
+    )
+  end
+
+  defp pose_face_rects(face), do: Enum.map_join(face, fn {x, y, w, h} -> rect(x, y, w, h) end)
+
+  # The euglena Kofun-kun loves: a little green blob with a flagellum tail.
+  defp pose_extra(:munch), do: group("#7bf0a6", rect(1, 6, 2, 2) <> rect(0, 8, 1, 1))
+  defp pose_extra(_), do: ""
+
   @doc "Standalone favicon: the same pixels on a dark rounded tile."
   def favicon_svg do
     inner =

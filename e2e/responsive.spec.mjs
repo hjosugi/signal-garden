@@ -16,6 +16,7 @@ const PAGES = [
   { name: "radar", path: "/radar/", ready: ".radar-card" },
   { name: "radar-github", path: "/radar/github/", ready: ".radar-card" },
   { name: "radar-news", path: "/radar/news/", ready: ".radar-card" },
+  { name: "gallery", path: "/gallery/", ready: ".char-card" },
 ];
 
 const SHOT_DIR = join("e2e", "screenshots");
@@ -122,6 +123,18 @@ test("switching tabs filters in place without a full page reload", async ({ page
   await page.waitForURL(/\/radar\/$/);
   expect(await page.evaluate(() => window.__noReload === true)).toBe(true);
   await expect(page.locator(".radar-tab.active")).toHaveText("all");
+});
+
+test("gallery introduces both mascots with pixel sprites and pose frames", async ({ page }) => {
+  await page.goto("/gallery/", { waitUntil: "networkidle" });
+  await expect(page.locator(".char-card")).toHaveCount(2);
+  // Each character's hero sprite and a row of pose frames render as inline SVG.
+  await expect(page.locator(".char-hero-sprite svg")).toHaveCount(2);
+  expect(await page.locator(".char-frames .frame").count()).toBeGreaterThanOrEqual(6);
+  await expect(page.locator(".dochicken-svg").first()).toBeVisible();
+  // Gallery is reachable from the primary nav.
+  await page.goto("/", { waitUntil: "networkidle" });
+  await expect(page.locator('nav a[href="gallery/"]')).toHaveCount(1);
 });
 
 test("about page renders its project and skill sections opaquely", async ({ page }) => {
