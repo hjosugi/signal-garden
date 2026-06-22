@@ -156,7 +156,7 @@ h1 { font-size: clamp(3rem, 9vw, 7.4rem); margin: 0; max-width: 13ch; }
 .radar-callout > div { max-width: 780px; }
 .radar-callout p:last-child { color: var(--muted); }
 
-.inbox-shell { padding: 58px 0 96px; --radar-stick: 190px; }
+.inbox-shell { padding: 36px 0 96px; --radar-stick: 190px; }
 .radar-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 26px 0 0; }
 .radar-tab {
   text-decoration: none;
@@ -286,6 +286,8 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
   .shell { width: min(100% - 22px, 1120px); }
   .site-header nav .nav-link:nth-child(n+4) { display: none; }
   .hero { padding-top: 28px; }
+  .inbox-shell { padding-top: 22px; }
+  .gallery-shell { padding-top: 22px; }
   .status-strip { grid-template-columns: 1fr; }
   .status-strip div { border-right: 0; border-bottom: 1px solid var(--line); }
   .status-strip div:last-child { border-bottom: 0; }
@@ -473,8 +475,8 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
 .reveal.in-view { opacity: 1; transform: none; }
 
 /* gallery: pixel-art character intros (Kofun-kun, Dochicken-san) */
-.gallery-shell { padding: 58px 0 96px; }
-.gallery-hero { padding: 8px 0 12px; }
+.gallery-shell { padding: 36px 0 96px; }
+.gallery-hero { padding: 0 0 12px; }
 .gallery-hero h1 { font-size: clamp(1.8rem, 5vw, 3.4rem); margin: 14px 0 0; }
 .gallery-hero .lede { color: var(--muted); max-width: 60ch; margin: 14px 0 0; }
 
