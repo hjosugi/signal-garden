@@ -17,7 +17,6 @@
   <div class="shell nav-shell">
     <a class="brand" href="./" aria-label="Home"><span class="prompt">~/</span><%= HTML.escape(@site.handle) %></a>
     <nav aria-label="Primary navigation">
-      <a class="nav-link active" href="./" aria-label="home">~/</a>
       <a class="nav-link" href="radar/">radar/</a>
       <a class="nav-link" href="popular/">popular/</a>
       <a class="nav-link" href="gallery/">gallery/</a>

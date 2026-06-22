@@ -284,11 +284,7 @@ kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4p
 
 @media (max-width: 560px) {
   .shell { width: min(100% - 22px, 1120px); }
-  .site-header nav .nav-link:nth-child(n+5) { display: none; }
-  .nav-shell { gap: 10px; }
-  nav { gap: 11px; }
-  .nav-link { font-size: 0.82rem; }
-  .brand { font-size: 0.92rem; }
+  .site-header nav .nav-link:nth-child(n+4) { display: none; }
   .hero { padding: 28px 0 28px; }
   .inbox-shell { padding-top: 22px; }
   .gallery-shell { padding-top: 22px; }

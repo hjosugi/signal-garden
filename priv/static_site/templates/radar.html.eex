@@ -18,7 +18,6 @@
   <div class="shell nav-shell">
     <a class="brand" href="<%= @root %>" aria-label="Home"><span class="prompt">~/</span><%= HTML.escape(@site.handle) %></a>
     <nav aria-label="Primary navigation">
-      <a class="nav-link" href="<%= @root %>" aria-label="home">~/</a>
       <a class="nav-link<%= if @category != "github", do: " active" %>" href="<%= @root %>radar/">radar/</a>
       <a class="nav-link<%= if @category == "github", do: " active" %>" href="<%= @root %>popular/">popular/</a>
       <a class="nav-link" href="<%= @root %>gallery/">gallery/</a>
