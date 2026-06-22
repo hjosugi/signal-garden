@@ -82,7 +82,7 @@ test("popular is a separate page scoped to github.com links", async ({ page }) =
   await page.goto("/popular/", { waitUntil: "networkidle" });
   await page.waitForSelector(".radar-card");
   await expect(page.locator("h1")).toHaveText(/Popular on GitHub/i);
-  await expect(page.locator("nav a.active")).toHaveText("popular");
+  await expect(page.locator("nav a.active")).toHaveText("popular/");
   const hosts = await page
     .locator(".radar-card h2 a")
     .evaluateAll((els) => els.map((e) => new URL(e.href).hostname));
