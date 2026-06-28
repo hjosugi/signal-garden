@@ -12,6 +12,20 @@
   ],
   projects: [
     %{
+      name: "Irodori Table",
+      url: "https://github.com/hjosugi/irodori-table",
+      docs_url: "https://hjosugi.github.io/irodori-docs/",
+      summary:
+        "A Tauri desktop database client I am building around Rust, React, and TypeScript. The main repo keeps the app, shared crates, extension SDK work, sample database tooling, and release automation together.",
+      stack: ["Rust", "Tauri", "React", "TypeScript", "Vite", "SQL"],
+      highlights: [
+        "Desktop UX stays in one repo: query editor, result grid, BI panels, ERD layout, and connection flows.",
+        "Generated Rust-to-TypeScript bindings keep the Tauri boundary checked instead of hand-waved.",
+        "The docs site is a separate mdBook so architecture, privacy, support, and database coverage notes are easy to browse."
+      ],
+      featured: true
+    },
+    %{
       name: "Daimon",
       url: "https://github.com/hjosugi/daimon",
       demo_url: "https://daimon-sandy.vercel.app/",
@@ -51,6 +65,19 @@
         "Just a fun experiment in keeping the good comments readable."
       ],
       featured: true
+    },
+    %{
+      name: "sql-dialect-fmt",
+      url: "https://github.com/hjosugi/sql-dialect-fmt",
+      summary:
+        "An opinionated formatter and syntax toolchain for Snowflake SQL and Databricks SQL. It is built in Rust and aims for gofmt-style low-config formatting without changing meaningful SQL tokens or comments.",
+      stack: ["Rust", "SQL", "rowan", "Tree-sitter", "WASM", "LSP"],
+      highlights: [
+        "The formatter is designed to be idempotent and lossless for meaningful tokens and comments.",
+        "Ships as a CLI, language-server pieces, Tree-sitter grammar, and editor/browser extension packages.",
+        "Includes a Snowsight Chrome extension path powered by the formatter compiled to WebAssembly."
+      ],
+      featured: false
     },
     %{
       name: "Form Panic Bureau",
